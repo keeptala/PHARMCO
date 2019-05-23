@@ -10,15 +10,18 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/hello', function () {
-return "hello world";
-});
+///creating a hello route
+// Route::get('/hello', function () {
+// return "hello world";
+// });
   
 // Route::get('/', function () {
 //     return view('welcome');
 //     });
 
-Route::get('/about',function(){
-    return view('pages.about');
-});
+route::get('/','pageController@index');
+route::get('/about','pageController@about');
+route::get('/services','pageController@services');
+
+
+ 
