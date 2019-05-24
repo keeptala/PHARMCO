@@ -9,12 +9,18 @@
               <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/about">about</a>
+              <a class="nav-link" href="{{ route("about")}}">about</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/services">services</a>
             </li>
-            
+            <li class="nav-item">
+                <a class="nav-link" href="/post">blog</a>
+            </li>
+            <li class="nav-item navbar-right">
+                <a class="nav-link" href="/post/create">Create Post</a>
+            </li>
           </ul>
+          
         </div>
       </nav>

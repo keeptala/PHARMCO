@@ -20,8 +20,8 @@
 //     });
 
 route::get('/','pageController@index');
-route::get('/about','pageController@about');
+route::get('/about','pageController@about')->name("about");
 route::get('/services','pageController@services');
-
+route::resource('post','PostController');
 
  
