@@ -25,3 +25,11 @@ route::get('/services','pageController@services');
 route::resource('post','PostController');
 
  
+
+Auth::routes();
+
+Route::get('/dashoard', 'DashBoardController@index');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
