@@ -8,6 +8,16 @@ use Illuminate\Http\Request;
 use App\post;
 class PostController extends Controller
 {
+      /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth',['except'=>['index','show','about','services']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

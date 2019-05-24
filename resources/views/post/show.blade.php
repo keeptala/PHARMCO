@@ -5,11 +5,13 @@
 <div class="container">
     {!!$post->body!!}
 </div><hr>
-<small>Written On {{$post->created_at}}</small>
+<small>Written On {{$post->created_at}}By {{$post->user->name}}</small>
 <hr>
+@if(!Auth::guest())
 <a href="/post/{{$post->id}}/edit" class="btn btn-defaul">Edit</a>
 {!!Form::open(['action'=>['PostController@destroy',$post->id],'method'=>'POST','class'=>'pull-right'])!!}
 {{Form::hidden('_method','DELETE')}}
 {{Form::submit('Delete',['class'=>'btn btn-danger'])}}
 {!!Form::close()!!}
+@endif
 @endsection

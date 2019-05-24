@@ -6,8 +6,18 @@ use Illuminate\Http\Request;
 
 class pageController extends Controller
 {
+      /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth',['except'=>['index','show','about','services']]);
+    }
+
     public function index(){
-        $title="Blog";
+        $title='Pharmco';
         // return view('pages.index',compact('title'));
         return view('pages.index')->with('title',$title);
 

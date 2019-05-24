@@ -14,8 +14,36 @@
                         </div>
                     @endif
                     <a href="/post/create" class="btn btn-primary">Create Posts</a>
-                    <h1>Your Posts</h1>
-                    You are logged in!
+                    <h1>Your Blog Posts</h1>
+                    {{-- @if(count($post)>0)
+                <table class="table table-striped">
+                    <tr>
+                        <th>
+                            Title
+                        </th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                   @foreach($posts as $post)
+                   <tr>
+                        <td>
+                            {{$post->title}}
+                        </td>
+                        <td>
+                            <a href="/post/{{$post->id}}/edit" class="btn btn-default">Edit</a>
+                        </td>
+                        <td>
+                            {!!Form::open(['action'=>['PostController@destroy',$post->id],'method'=>'POST','class'=>'pull-right'])!!}
+                                {{Form::hidden('_method','DELETE')}}
+                                {{Form::submit('Delete',['class'=>'btn btn-danger'])}}
+                            {!!Form::close()!!}
+                        </td>
+                    </tr>
+                   @endforeach
+                </table>
+                @else
+              <p>  you have no posts</p>
+                @endif --}}
                 </div>
             </div>
         </div>
