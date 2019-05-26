@@ -14,25 +14,28 @@
                         </div>
                     @endif
                         <div class="panel-body">
-                            <a href="/post/create" class="btn btn-primary">Create Post</a>
-                            <h1>Your Blog Postss</h1>
-                            {{-- @if(count($posts)>0)
+                           
+                            <h1>Products List</h1>
+                            @if(count($products)>0)
                             <table class="table table-striped">
-                                <tr><th>title</th>
+                                <tr><th>Products</th>
                                     <th></th>
                                     <th></th>
                                 </tr>
                                 
-                                @foreach($posts as $post)
-                            <tr><th>{{$post->title}}</th>
-                            <th><a href="/post/{{$post->id}}/edit" class="btn btn-info"></a>Edit</th>
-                            <th><a href="/post/{{$post->id}}/edit" class="btn btn-danger"></a></th>
+                                @foreach($products as $product)
+                            <tr><td>{{$product->name}}</td>
+                            <td><a href="/purchase/create" class="btn btn-primary">Make Purchase</a></td>
+                            {{-- <td>{!!Form::open(['action'=>['ProductsController@destroy',$post->id],'method'=>'POST','class'=>'pull-right'])!!}
+                                {{Form::hidden('_method','DELETE')}}
+                                {{Form::submit('Delete',['class'=>'btn btn-danger'])}}
+                                {!!Form::close()!!}</td> --}}
                                 </tr>
                                 @endforeach
                             </table>
                             @else
-                            <p>You have no posts</p>
-                            @endif --}}
+                            <p>You have no products</p>
+                            @endif
                         </div>
 
                     

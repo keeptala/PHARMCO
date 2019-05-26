@@ -74,7 +74,7 @@ class PostController extends Controller
     public function show($id)
     {
         //shows a specific post
-        $post= post::find($id);
+         $post= post::find($id);
         return view('post.show')->with('post',$post);
     }
 
@@ -88,6 +88,9 @@ class PostController extends Controller
     {
         //
         $post= post::find($id);
+        if(auth()->user()->id !==$post->user_id){
+            return redirect('/post')->with('error','UnAuthorised Page'); 
+        }
         return view('post.edit')->with('post',$post);
     }
 
@@ -121,8 +124,11 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
+    {   
         $post=post::find($id);
+        if(auth()->user()->id !==$post->user_id){
+            return redirect('/post')->with('error','UnAuthorised Page'); 
+        }
         $post->delete();
         return redirect('/post')->with('success','Post Removed');
     }

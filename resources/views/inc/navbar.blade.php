@@ -1,6 +1,6 @@
-
+<div class="container">
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
-          <div class="container">
+          
               <a class="navbar-brand" href="{{ url('/') }}">
                   {{ config('app.name', 'Laravel') }}
               </a>
@@ -19,10 +19,10 @@
                         <a class="nav-link" href="{{ route("about")}}">about</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="/services">services</a>
+                        <a class="nav-link" href="/products">Shop</a>
                       </li>
                       <li class="nav-item">
-                          <a class="nav-link" href="/post">blog</a>
+                          <a class="nav-link" href="/post">FeedBack</a>
                       </li>
                      
                     </ul>
@@ -60,6 +60,21 @@
                           </li>
                       @endguest
                   </ul>
+                <form  action='purchase/store'class="form-inline my-2 my-lg-0">
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search...">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-secondary btn-number">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <a class="btn btn-success btn-sm ml-3" href="order/create">
+                            <i class="fa fa-shopping-cart"></i> Cart
+                            <span class="badge badge-light">3</span>
+                        </a>
+                    </form>
               </div>
-          </div>
+          
       </nav>
+</div>

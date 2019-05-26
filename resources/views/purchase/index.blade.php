@@ -14,25 +14,31 @@
                         </div>
                     @endif
                         <div class="panel-body">
-                            <a href="/post/create" class="btn btn-primary">Create Post</a>
-                            <h1>Your Blog Postss</h1>
-                            {{-- @if(count($posts)>0)
+                           
+                            <h1>purchases List</h1>
+                            @if(count($purchases)>0)
                             <table class="table table-striped">
-                                <tr><th>title</th>
-                                    <th></th>
-                                    <th></th>
+                                <tr><th>PurchaseNo</th>
+                                    <th>ProductID</th>
+                                    <th>Quantity</th>
+                                    <th>Date of order</th>
+                                    <th>BuyingPrice</th>
                                 </tr>
                                 
-                                @foreach($posts as $post)
-                            <tr><th>{{$post->title}}</th>
-                            <th><a href="/post/{{$post->id}}/edit" class="btn btn-info"></a>Edit</th>
-                            <th><a href="/post/{{$post->id}}/edit" class="btn btn-danger"></a></th>
+                                @foreach($purchases as $purchase)
+                            <tr>
+                            <td>{{$purchase->PurchaseNo}}</td>
+                            <td>{{$purchase->ProductID}}</td>
+                            <td>{{$purchase->Quantity}}</td>
+                            <td>{{$purchase->dateOfPurchase}}</td>
+                            <td>{{$purchase->BuyingPrice}}</td>
+                            
                                 </tr>
                                 @endforeach
                             </table>
                             @else
-                            <p>You have no posts</p>
-                            @endif --}}
+                            <p>You have no products</p>
+                            @endif
                         </div>
 
                     

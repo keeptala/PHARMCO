@@ -13,8 +13,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth',['except'=>['index','show','about','services']]);
-    }
+        $this->middleware('auth');    }
 
     /**
      * Show the application dashboard.
@@ -22,10 +21,9 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
-    {   
+    {
         $user_id=auth()->user()->id;
         $user=User::find($user_id);
-        $posts=$user->posts;
-        return view('home')->with('posts',$posts);
+        return view('home')->with('posts',$user->post);
     }
 }

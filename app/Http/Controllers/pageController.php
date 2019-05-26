@@ -11,10 +11,7 @@ class pageController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth',['except'=>['index','show','about','services']]);
-    }
+    public function __construct(){ }
 
     public function index(){
         $title='Pharmco';
@@ -22,6 +19,7 @@ class pageController extends Controller
         return view('pages.index')->with('title',$title);
 
     }
+    
     public function about(){
         
         $title="About Us";

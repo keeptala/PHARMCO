@@ -24,12 +24,13 @@ route::get('/about','pageController@about')->name("about");
 route::get('/services','pageController@services');
 route::resource('post','PostController');
 
- 
-
-Auth::routes();
-
-Route::get('/dashoard', 'DashBoardController@index');
+route::resource('products','ProductsController');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+route::resource('purchase','PurchaseController');
+route::resource('customer','CustomersController');
+route::resource('supplier','SuppliersController');
+route::resource('order','OrdersController');
