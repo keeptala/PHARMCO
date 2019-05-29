@@ -72,7 +72,7 @@
                         </div>
                         <a class="btn btn-success btn-sm ml-3" href="/shoppingcart">
                             <i class="fa fa-shopping-cart"></i> Cart
-                        <span class="badge badge-light">{{Session::has('cart')?Session::get('cart')->totalQty:''}}</span>
+                        <span class="badge badge-light">{{Session::has('cart')?Session::get('cart')["totalQty"]:''}}</span>
                             <span class="badge badge-light"></span>
                         </a>
                        

@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-use Gloudemans\Shoppingcart\Contracts\Buyable;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model

@@ -15,7 +15,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products= Product::orderBy('name','desc')->paginate(3);
+        $products= Product::orderBy('name','desc')->paginate(10);
        return view('products.card')->with('products',$products);
     }
 
@@ -31,12 +31,7 @@ class ProductsController extends Controller
         return view('Products.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+  //displays a specific resource
     public function store(Request $request)
     {
        //stores and validate data from a form
@@ -47,34 +42,14 @@ class ProductsController extends Controller
                 'product_image'=>'image|nullable|max:1999'
                 ]
         );
-//         //handle  product_image upload
-//         if($request->hasFile('product_image')){
-//             //if the product image is submitted get file name with extention
-//             $fileNamewithext=$request->file('product_image')->getClientOriginalName();
-//             //get the file name
-//             $fileName=pathinfo($fileNamewithext,PATHINFO_FILENAME);
-//             //get the extention
-//             $extention=$request->file('product_image')->getOrignalclientExtension();
-//             // dd($extention);
-// //set the productimagetostore
-//             $productImageToStore=$fileName.'_'.time().'.'.$extention;
-//             //upload the image
-//             $path=$request->file('product_image')->store('public/product_images',$productImageToStore);
-
-//         }else{
-//             $productImageToStore="noimage.jpg";
-//         }
-$productImageToStore="noimage.jpg";
-        
+//todo:handle image upload
+        $productImageToStore="noimage.jpg";
         $product=new Product;
-        
         $product->name = $request->input('name');
         $product->description = $request->input('description');
         $product->supplierid = $request->input('Supplierid');
-       
         $product->product_image=$productImageToStore;
         $product->save();
-       
         return redirect('/product')->with('success','Product Created');
     }
 
@@ -87,8 +62,8 @@ $productImageToStore="noimage.jpg";
     public function show($id)
     {
         //specific product
-        $product= product::find($id);
-        return $request->session()->all();;
+//        $product= product::find($id);
+//        return $request->session()->all();
        
     }
 
@@ -105,11 +80,11 @@ $productImageToStore="noimage.jpg";
         return view('products.edit')->with('product',$product);
     }
 
-    public function getAddToCart(Request $request,$ProductID){
-        $product = Product::find($ProductID);
+    public function getAddToCart(Request $request,$productID){
+        $product = Product::find($productID);
         $oldcart = Session::has('cart') ? Session::get('cart') : null;
-        $cart = new Cart($oldcart);
-        $cart->add($product,$product->ProductID);
+       // dd($oldcart);
+        $cart = Cart::add($product,$productID,$oldcart);
         $request->session()->put('cart',$cart);
         // dd($request->session()->get('cart'));
         $message=$product->name.'  added to cart';
@@ -119,9 +94,8 @@ $productImageToStore="noimage.jpg";
         if(!session::has('cart')){
             return view('products.cart');
         }
-        $items=session::get('cart')->items;
-        
-        // $cart = new Cart($oldcart);
+        $items=session::get('cart')["items"];
+
         return view('products.cart')->with('items', $items );
        
     }
@@ -159,7 +133,7 @@ $productImageToStore="noimage.jpg";
     {
         //
         $product=Product::find($id);
-        $post->delete();
+        $product->delete();
         return redirect('/products')->with('success','Product Removed');
     }
 }
