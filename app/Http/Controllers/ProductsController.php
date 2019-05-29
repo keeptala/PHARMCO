@@ -119,9 +119,10 @@ $productImageToStore="noimage.jpg";
         if(!session::has('cart')){
             return view('products.cart');
         }
-        $oldcart=session::get('cart');
-        $cart = new Cart($oldcart);
-        return view('products.cart')->with('cart',$cart);
+        $items=session::get('cart')->items;
+        
+        // $cart = new Cart($oldcart);
+        return view('products.cart')->with('items', $items );
        
     }
     /**

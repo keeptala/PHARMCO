@@ -17,7 +17,13 @@ class Cart
             }
         }
         public function  add($items,$ProductID){
-             $storedItem=['qty'=> 0 ,'price' => $items->price,'item' => $items];
+             $storedItem=[
+                 'qty'=> 0 ,
+                 'price' => $items->price,
+                 'item' => $items,
+                 'ProductID'=>$ProductID,
+                'Product_image'=> $items->Product_image
+                ];
              //checking if items array has items
              if($this->items){
                  //if true then check if the particular item exists in the items array
@@ -42,6 +48,7 @@ class Cart
              $this->items[$ProductID]=$storedItem;
              $this->totalQty += 1;
              $this->totalPrice += $items->price;
+            
         }   
 
 }

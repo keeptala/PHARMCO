@@ -2,8 +2,9 @@
 @extends('layouts.app')
 
 @section('content')
-{{-- {{dd($cart)}} --}}
-@if($cart->items)
+
+
+@if($items)
 <table id="cart" class="table table-hover table-condensed">
         <thead>
         <tr>
@@ -16,13 +17,14 @@
         </thead>
         <tbody>
      
-            @foreach($cart->items as $orderedproduct)       
+            @foreach($items as $orderedproduct)       
                 <tr>
                     <td data-th="Product">
                         <div class="row">
-                            <div class="col-sm-3 hidden-xs"><img src="{{$orderedproduct->product_image }}" width="100" height="100" class="img-responsive"/></div>
+                              
+                            <div class="col-sm-3 hidden-xs"><img src="{{$orderedproduct['item']['product_image'] }}" width="100" height="100" class="img-responsive"/></div>
                             <div class="col-sm-9">
-                                <h4 class="nomargin">{{ $orderedproduct['name'] }}</h4>
+                                <h4 class="nomargin">{{ $orderedproduct['item']['name'] }}</h4>
                             </div>
                         </div>
                     </td>
@@ -31,10 +33,7 @@
                         <input type="number" value="{{ $orderedproduct['qty'] }}" class="form-control quantity" />
                     </td>
                     <td data-th="Subtotal" class="text-center">${{ $orderedproduct['price'] * $orderedproduct['qty'] }}</td>
-                    <td class="actions" data-th="">
-                        <button class="btn btn-info btn-sm update-cart" data-id="{{ $id }}"><i class="fa fa-refresh"></i></button>
-                        <button class="btn btn-danger btn-sm remove-from-cart" data-id="{{ $id }}"><i class="fa fa-trash-o"></i></button>
-                    </td>
+          
                 </tr>
             @endforeach
        
@@ -42,12 +41,12 @@
         </tbody>
         <tfoot>
         <tr class="visible-xs">
-            <td class="text-center"><strong>Total {{ $cart->totalQty }}</strong></td>
+            <td class="text-center"><strong>Total  </strong></td>
         </tr>
         <tr>
             <td><a href="/products" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
             <td colspan="2" class="hidden-xs"></td>
-            <td class="hidden-xs text-center"><strong>Total ${{ $cart->totalprice }}</strong></td>
+            <td class="hidden-xs text-center"><strong>Total </strong></td>
         </tr>
         </tfoot>
     </table>
