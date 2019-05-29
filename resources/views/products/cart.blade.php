@@ -2,91 +2,94 @@
 @extends('layouts.app')
 
 @section('content')
-
-<section class="jumbotron text-center">
-        <div class="container">
-            <h1 class="jumbotron-heading">Shopping CART</h1>
-         </div>
-    </section>
-    
-    <div class="container mb-4">
-        <div class="row">
-            <div class="col-12">
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col"> </th>
-                                <th scope="col">Product</th>
-                                <th scope="col">Available</th>
-                                <th scope="col" class="text-center">Quantity</th>
-                                <th scope="col" class="text-right">Price</th>
-                                <th> </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><img src="https://dummyimage.com/50x50/55595c/fff" /> </td>
-                                <td>Product Name Dada</td>
-                                <td>In stock</td>
-                                <td><input class="form-control" type="text" value="1" /></td>
-                                <td class="text-right">124,90 €</td>
-                                <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
-                            </tr>
-                            <tr>
-                                <td><img src="https://dummyimage.com/50x50/55595c/fff" /> </td>
-                                <td>Product Name Toto</td>
-                                <td>In stock</td>
-                                <td><input class="form-control" type="text" value="1" /></td>
-                                <td class="text-right">33,90 €</td>
-                                <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
-                            </tr>
-                            <tr>
-                                <td><img src="https://dummyimage.com/50x50/55595c/fff" /> </td>
-                                <td>Product Name Titi</td>
-                                <td>In stock</td>
-                                <td><input class="form-control" type="text" value="1" /></td>
-                                <td class="text-right">70,00 €</td>
-                                <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>Sub-Total</td>
-                                <td class="text-right">255,90 €</td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>Shipping</td>
-                                <td class="text-right">6,90 €</td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td><strong>Total</strong></td>
-                                <td class="text-right"><strong>346,90 €</strong></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="col mb-2">
-                <div class="row">
-                    <div class="col-sm-12  col-md-6">
-                        <button class="btn btn-block btn-light">Continue Shopping</button>
-                    </div>
-                    <div class="col-sm-12 col-md-6 text-right">
-                        <button class="btn btn-lg btn-block btn-success text-uppercase">Checkout</button>
-                    </div>
-                </div>
-            </div>
+{{-- {{dd($cart)}} --}}
+@if($cart->items)
+<table id="cart" class="table table-hover table-condensed">
+        <thead>
+        <tr>
+            <th style="width:50%">Product</th>
+            <th style="width:10%">Price</th>
+            <th style="width:8%">Quantity</th>
+            <th style="width:22%" class="text-center">Subtotal</th>
+            <th style="width:10%"></th>
+        </tr>
+        </thead>
+        <tbody>
+     
+            @foreach($cart->items as $orderedproduct)       
+                <tr>
+                    <td data-th="Product">
+                        <div class="row">
+                            <div class="col-sm-3 hidden-xs"><img src="{{$orderedproduct->product_image }}" width="100" height="100" class="img-responsive"/></div>
+                            <div class="col-sm-9">
+                                <h4 class="nomargin">{{ $orderedproduct['name'] }}</h4>
+                            </div>
+                        </div>
+                    </td>
+                    <td data-th="Price">${{ $orderedproduct['price'] }}</td>
+                    <td data-th="Quantity">
+                        <input type="number" value="{{ $orderedproduct['qty'] }}" class="form-control quantity" />
+                    </td>
+                    <td data-th="Subtotal" class="text-center">${{ $orderedproduct['price'] * $orderedproduct['qty'] }}</td>
+                    <td class="actions" data-th="">
+                        <button class="btn btn-info btn-sm update-cart" data-id="{{ $id }}"><i class="fa fa-refresh"></i></button>
+                        <button class="btn btn-danger btn-sm remove-from-cart" data-id="{{ $id }}"><i class="fa fa-trash-o"></i></button>
+                    </td>
+                </tr>
+            @endforeach
+       
+ 
+        </tbody>
+        <tfoot>
+        <tr class="visible-xs">
+            <td class="text-center"><strong>Total {{ $cart->totalQty }}</strong></td>
+        </tr>
+        <tr>
+            <td><a href="/products" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
+            <td colspan="2" class="hidden-xs"></td>
+            <td class="hidden-xs text-center"><strong>Total ${{ $cart->totalprice }}</strong></td>
+        </tr>
+        </tfoot>
+    </table>
+    @else
+        <div class="jumbotron">
+            <strong>no products selected yet</strong>
+            <a href="/products" class="btn btn-primary">continue shopping</a>
         </div>
-    </div>
+    @endif
+    <script type="text/javascript">
+ 
+        $(".update-cart").click(function (e) {
+           e.preventDefault();
+ 
+           var ele = $(this);
+ 
+            $.ajax({
+               url: '{{ url('update-cart') }}',
+               method: "patch",
+               data: {_token: '{{ csrf_token() }}', id: ele.attr("data-id"), quantity: ele.parents("tr").find(".quantity").val()},
+               success: function (response) {
+                   window.location.reload();
+               }
+            });
+        });
+ 
+        $(".remove-from-cart").click(function (e) {
+            e.preventDefault();
+ 
+            var ele = $(this);
+ 
+            if(confirm("Are you sure")) {
+                $.ajax({
+                    url: '{{ url('remove-from-cart') }}',
+                    method: "DELETE",
+                    data: {_token: '{{ csrf_token() }}', id: ele.attr("data-id")},
+                    success: function (response) {
+                        window.location.reload();
+                    }
+                });
+            }
+        });
+ 
+    </script>
     @endSection

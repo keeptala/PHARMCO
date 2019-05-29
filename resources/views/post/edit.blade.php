@@ -2,7 +2,7 @@
 
 @section('content')
     
-<h1>Create Posts</h1>
+<h1>Edit Feedback</h1>
 {!! Form::open(['action' =>[ 'PostController@update',$post->id],'method'=>'POST']) !!}
     <div class="form-group">
         {{Form::label('title','Title')}}

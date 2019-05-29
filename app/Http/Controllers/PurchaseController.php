@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Purchase;
+use DB;
 
-class PurchaseController extends Controller
-{
+class PurchaseController extends Controller{
     public function __construct()
     { }
     /**
@@ -40,14 +40,22 @@ class PurchaseController extends Controller
     public function store(Request $request)
     {
         //we get the request of the purchase and store it in the database
-        $purchase=new Purchase;       
-        $purchase->ProductID=$request->input('ProductID'); 
-        $purchase->BuyingPrice=$request->input('BuyingPrice');
-        $purchase->Quantity=$request->input('Quantity');
-        // dd($request->all());
-        // $purchase->purchases->Product()->update($request,$purchase->ProductID);
-        $purchase->save();
-        return redirect('/purchase')->with('success','Purchase made');
+        $purchase              =  new Purchase;       
+        $purchase->ProductID   =  $request->input('ProductID'); 
+        $purchase->BuyingPrice =  $request->input('BuyingPrice');
+        $purchase->Quantity    =  $request->input('Quantity');
+        //we get the current quantity in products table then and it to the quantity purchased
+        //then we update the products table
+        $quantityInStock       =  DB::select('select products.QuantityInStock from products where ProductID=?',
+        [$request->input('ProductID')]);
+         foreach($quantityInStock as $stock){
+          //add the quantity purchased to the current stock
+          $stock->QuantityInStock +=   $request->input('Quantity');
+          DB::update('update products set products.QuantityInStock=? where ProductID=?',
+          [$stock->QuantityInStock,$request->input('ProductID')]);
+         }
+         $purchase->save();
+         return redirect('/purchase')->with('success','Purchase made');
     }
 
     /**

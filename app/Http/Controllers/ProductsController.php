@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Product;
+use App\cart;
+use Session;
 class ProductsController extends Controller
 {
     /**
@@ -13,10 +15,11 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products= Product::all();
+        $products= Product::orderBy('name','desc')->paginate(3);
        return view('products.card')->with('products',$products);
     }
 
+   
     /**
      * Show the form for creating a new resource.
      *
@@ -61,6 +64,7 @@ class ProductsController extends Controller
 //         }else{
 //             $productImageToStore="noimage.jpg";
 //         }
+$productImageToStore="noimage.jpg";
         
         $product=new Product;
         
@@ -68,15 +72,10 @@ class ProductsController extends Controller
         $product->description = $request->input('description');
         $product->supplierid = $request->input('Supplierid');
        
-        // $product->product_image=$productImageToStore;
+        $product->product_image=$productImageToStore;
         $product->save();
-        
-        // $product->update( $request->all());
-            // $product->quantity += $request->quanty;
-     
-
-
-        return redirect('/home')->with('success','Product Created');
+       
+        return redirect('/product')->with('success','Product Created');
     }
 
     /**
@@ -89,7 +88,7 @@ class ProductsController extends Controller
     {
         //specific product
         $product= product::find($id);
-        return $product;
+        return $request->session()->all();;
        
     }
 
@@ -101,31 +100,53 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        //
+        //locate the product to be deleted then load the edit view
+        $product=Product::find($id);
+        return view('products.edit')->with('product',$product);
     }
 
+    public function getAddToCart(Request $request,$ProductID){
+        $product = Product::find($ProductID);
+        $oldcart = Session::has('cart') ? Session::get('cart') : null;
+        $cart = new Cart($oldcart);
+        $cart->add($product,$product->ProductID);
+        $request->session()->put('cart',$cart);
+        // dd($request->session()->get('cart'));
+        $message=$product->name.'  added to cart';
+        return back()->with('success',$message);
+    }
+    public function getCart(){
+        if(!session::has('cart')){
+            return view('products.cart');
+        }
+        $oldcart=session::get('cart');
+        $cart = new Cart($oldcart);
+        return view('products.cart')->with('cart',$cart);
+       
+    }
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * 
+     *
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request,$id)
     {
-        //
         $this->validate(
             $request,[
-                    'Quantity'=>'required',
-                    'ProductID'=>'required'
+                    'name'=>'required',
+                    'description'=>'required'
             ]
             );
-            $id=$request->input('ProductID');
             $product=Product::find($id);
-            $product->QuantityInStock +=$request->input('Quantity');
-            $post->save();
-           
+            $product->name=$request->input('name');
+            $product->description=$request->input('description');
+            $product->save();
+            return redirect('/products')->with('success','Product Updated');
     }
+      
 
     /**
      * Remove the specified resource from storage.

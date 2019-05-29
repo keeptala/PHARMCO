@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-
+use Gloudemans\Shoppingcart\Contracts\Buyable;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
@@ -24,4 +24,5 @@ class Product extends Model
     public function purchases(){
         return $this->hasMany('App\Purchase ');
     }
+   
 }

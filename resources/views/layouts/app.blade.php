@@ -20,7 +20,38 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
-        
+        .table>tbody>tr>td, .table>tfoot>tr>td{
+    vertical-align: middle;
+}
+@media screen and (max-width: 600px) {
+    table#cart tbody td .form-control{
+        width:20%;
+        display: inline !important;
+    }
+    .actions .btn{
+        width:36%;
+        margin:1.5em 0;
+    }
+ 
+    .actions .btn-info{
+        float:left;
+    }
+    .actions .btn-danger{
+        float:right;
+    }
+ 
+    table#cart thead { display: none; }
+    table#cart tbody td { display: block; padding: .6rem; min-width:320px;}
+    table#cart tbody tr td:first-child { background: #333; color: #fff; }
+    table#cart tbody td:before {
+        content: attr(data-th); font-weight: bold;
+        display: inline-block; width: 8rem;
+    }
+ 
+ 
+ 
+    table#cart tfoot td{display:block; }
+    table#cart tfoot td .btn{display:block;}
         .row.heading h2 {
     color: #fff;
     font-size: 52.52px;
