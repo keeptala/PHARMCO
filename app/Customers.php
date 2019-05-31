@@ -1,11 +1,12 @@
 <?php
 
 namespace App;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
-class Customers extends Model
+class Customer extends Model
 {
+
     //
      //table name
      protected $table="customer";
@@ -16,5 +17,8 @@ class Customers extends Model
   protected $fillable = [
   'id','Fname','Lname','City','Email','phoneNo','street'
   ];
+  public function Orders(){
+      return $this->hasMany('App\Order');
+  }
 
 }

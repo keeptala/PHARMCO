@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Order;
 use Illuminate\Http\Request;
 use App\Product;
+use Illuminate\Support\Facades\Auth;
 use App\cart;
 use Session;
 class ProductsController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -20,17 +20,27 @@ class ProductsController extends Controller
     }
 
    
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         //return the create Product view
         return view('Products.create');
     }
-
+    public function postCheckout(Request $request){
+        if(!Session::has('cart')){
+            return view('products.cart');
+        }
+        $oldCart=Session::get('cart');
+        $cart=new Cart($oldCart);
+        try{
+        $order=new Order();
+        $order->dateOfOrder=now();
+        $order->deliveryStatus='pending';
+        Auth::User()->Orders()->save($order);
+        }catch (Exception $e){
+            return redirect('products.cart')->with('error',$e);
+        }
+    }
   //displays a specific resource
     public function store(Request $request)
     {
@@ -42,7 +52,7 @@ class ProductsController extends Controller
                 'product_image'=>'image|nullable|max:1999'
                 ]
         );
-//todo:handle image upload
+        //todo:handle image upload
         $productImageToStore="noimage.jpg";
         $product=new Product;
         $product->name = $request->input('name');
@@ -53,12 +63,6 @@ class ProductsController extends Controller
         return redirect('/product')->with('success','Product Created');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //specific product
@@ -67,12 +71,7 @@ class ProductsController extends Controller
        
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
         //locate the product to be deleted then load the edit view
@@ -99,14 +98,7 @@ class ProductsController extends Controller
         return view('products.cart')->with('items', $items );
        
     }
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request,$id)
     {
         $this->validate(
@@ -123,12 +115,6 @@ class ProductsController extends Controller
     }
       
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //

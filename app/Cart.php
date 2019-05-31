@@ -5,8 +5,9 @@ namespace App;
 class Cart 
 {   
 
-
-        public static function  add($items,$ProductID,$oldcart){
+        ///to add a new item into the cart with the parameters
+        /// items,the productId and the old cart
+        public static function  add($items,$ProductID,$oldCart){
 
             $storedItem=[
                 'qty'=> 0 ,
@@ -17,34 +18,34 @@ class Cart
 
             ];
             //checking if items array has items
-            if($oldcart["items"]){
+            if($oldCart["items"]){
                 //if true then check if the particular item exists in the items array
                 //by passing its productID
-                if(array_key_exists("".$ProductID."",$oldcart["items"])){
-                    //if true the initialize stored item to the item in the cart
-                    $storedItem = $oldcart["items"]["".$ProductID.""];
+                if(array_key_exists("".$ProductID."",$oldCart["items"])){
+                    //if true then initialize stored item to the item in the cart
+                    $storedItem = $oldCart["items"]["".$ProductID.""];
                     $storedItem['qty']++;
                     $storedItem['price'] = $items->price * $storedItem['qty'];
-                    $oldcart["items"]["".$ProductID.""]=$storedItem;
+                    $oldCart["items"]["".$ProductID.""]=$storedItem;
                 }//if product does not exist in the cart then
                 else{
                     $storedItem['qty']++;
                     $storedItem['price'] = $items->price * $storedItem['qty'];
-                    //     //store the new item into the items array
-                    $oldcart["items"]["".$ProductID.""] = $storedItem;
-                    $oldcart["totalQty"] += 1;
+                    //store the new item into the items array
+                    $oldCart["items"]["".$ProductID.""] = $storedItem;
+                    $oldCart["totalQty"] += 1;
                 }
 
             }//if the cart is empty then
              else{
-                 $oldcart = [];
+                 $oldCart = [];
                  $storedItem['qty']++;
                  $storedItem['price'] = $items->price * $storedItem['qty'];
-                 $oldcart["items"]["".$ProductID.""]=$storedItem;
-                 $oldcart["totalQty"] = 1;
+                 $oldCart["items"]["".$ProductID.""]=$storedItem;
+                 $oldCart["totalQty"] = 1;
              }
-             $oldcart["totalPrice"] = $storedItem["price"];
-             return $oldcart;
+             $oldCart["totalPrice"] = $storedItem["price"];
+             return $oldCart;
         }   
 
 }

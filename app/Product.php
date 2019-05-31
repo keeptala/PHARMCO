@@ -13,8 +13,7 @@ class Product extends Model
        //set the timestamps
        public $timestamps=false;
     protected $fillable = [
-    'QuantityInStock',
-    'name', 'ProductID', 'supplierId','description',
+    'QuantityInStock','name', 'ProductID', 'supplierId','description',
     ];
 
     public function product(){

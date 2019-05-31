@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddProductImageToProducts extends Migration
+class AddProfileImageToCustomers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class AddProductImageToProducts extends Migration
      */
     public function up()
     {
-        Schema::table('products', function (Blueprint $table) {
-           
-                $table->string('product_image');
-            });
-        
+        Schema::table('customer', function (Blueprint $table) {
+            $table->string('Profile_image');
+        });
     }
 
     /**
@@ -27,9 +25,8 @@ class AddProductImageToProducts extends Migration
      */
     public function down()
     {
-        Schema::table('products', function (Blueprint $table) {
-            //
-            $table->dropColumn('product_image');
+        Schema::table('customer', function (Blueprint $table) {
+            $table->dropColumn('profile_image');
         });
     }
 }

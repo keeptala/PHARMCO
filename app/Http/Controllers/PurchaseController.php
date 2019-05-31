@@ -39,6 +39,7 @@ class PurchaseController extends Controller{
      */
     public function store(Request $request)
     {
+
         //we get the request of the purchase and store it in the database
         $purchase              =  new Purchase;       
         $purchase->ProductID   =  $request->input('ProductID'); 

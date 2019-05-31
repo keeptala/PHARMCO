@@ -19,7 +19,123 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <style>
+        .wizard  .nav-tabs > li.active > a::after, .wizard .nav-tabs > li:hover > a::after { transform: scale(1); }
+        .tab-nav > li > a::after { background: #5a4080 none repeat scroll 0% 0%; color: #fff; }
+        .tab-pane { padding: 0px 0; }
+
+        .wizard .nav-tabs > li  {width:5%; text-align:center;}
+
+        /* check out */
+        .breadcrumb_checkout {
+            list-style: none;
+            overflow: hidden;
+            margin: 40px;
+            padding: 0;
+        }
+        .breadcrumb_checkout li {
+            float: left;
+        }
+        .breadcrumb_checkout li a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 0 8px 55px;
+            background: brown; /* fallback color */
+            background-color: #60ab59;
+            position: relative;
+            display: block;
+            float: left;
+        }
+        @media (min-width: 768px) {
+            .breadcrumb_checkout li a:after {
+                content: " ";
+                display: block;
+                width: 0;
+                height: 0;
+                border-top: 50px solid transparent;           /* Go big on the size, and let overflow hide */
+                border-bottom: 50px solid transparent;
+                border-left: 30px solid  #60ab5973;
+                position: absolute;
+                top: 50%;
+                margin-top: -50px;
+                left: 100%;
+                z-index: 2;
+            }
+            .breadcrumb_checkout li a:before {
+                content: " ";
+                display: block;
+                width: 0;
+                height: 0;
+                border-top: 50px solid transparent;           /* Go big on the size, and let overflow hide */
+                border-bottom: 50px solid transparent;
+                border-left: 30px solid white;
+                position: absolute;
+                top: 50%;
+                margin-top: -50px;
+                margin-left:0px;
+                left: 100%;
+                z-index: 1;
+            }
+            .breadcrumb_checkout li.active a:after
+            {
+                content: " ";
+                display: block;
+                width: 0;
+                height: 0;
+                border-top: 50px solid transparent;           /* Go big on the size, and let overflow hide */
+                border-bottom: 50px solid transparent;
+                border-left: 30px solid  #60ab59;
+                position: absolute;
+                top: 50%;
+                margin-top: -50px;
+                left: 100%;
+                z-index: 2;
+            }
+        }
+        .breadcrumb_checkout li:first-child a {
+            padding-left: 10px;
+        }
+
+        .breadcrumb_checkout li.active
+        {
+            background:        #60ab59;
+            color: #fff;
+        }
+        .breadcrumb_checkout li a
+        {
+            background:        #60ab5973;
+            color: #fff;
+        }
+        .breadcrumb_checkout li a:hover
+        {
+            background:        #60ab5973;
+            color: #fff;
+        }
+        .breadcrumb_checkout li a:visited
+        {
+            background:        #60ab5973;
+            color: #fff;
+        }
+        .breadcrumb_checkout li a:focus
+        {
+            background:        #60ab5973;
+            color: #fff;
+        }
+        .breadcrumb_checkout>li.disabled>a:hover {
+            background:        #60ab5973;
+            color: #fff;
+        }
+        .breadcrumb_checkout>li.disabled>a:visited {
+            background:        #60ab5973;
+            color: #fff;
+        }
+        .breadcrumb_checkout>li.disabled>a:focus {
+            background:        #60ab5973;
+            color: #fff;
+        }
+
+
         .table>tbody>tr>td, .table>tfoot>tr>td{
     vertical-align: middle;
 }
@@ -247,8 +363,9 @@ section .section-title {
     margin-bottom: 50px;
     text-transform: uppercase;
 }
-#footer {
-    /* background: #212121 !important; */
+.input-field{
+    max-width: 10px;
+}
 }
 #footer h5{
 	padding-left: 10px;
@@ -311,7 +428,7 @@ section .section-title {
 }
 }
 
-       }
+
     </style>
 </head>
 
@@ -330,6 +447,8 @@ section .section-title {
     <script>
     CKEDITOR.replace( 'article-ckeditor' );
     </script>
+    <script src="./checkout.js"
+    ></script>
    
 </body>
 </html>

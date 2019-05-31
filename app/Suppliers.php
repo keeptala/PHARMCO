@@ -13,8 +13,7 @@ class Suppliers extends Model
       //set the timestamps
       
    protected $fillable = [
-   'CompanyName',
-   'city', 'street', 'supplierId','PostalAddress',
+   'CompanyName','city', 'street', 'supplierId','PostalAddress',
    ];
     public function user(){
         return $this->belongsTo('App\User');

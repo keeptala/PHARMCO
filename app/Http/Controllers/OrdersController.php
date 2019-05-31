@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use Cart;
+
+use App\OrderProducts;
 use Illuminate\Http\Request;
 use App\Order;
+use Illuminate\Support\Facades\DB;
+
 class OrdersController extends Controller
 {
     /**
@@ -13,13 +16,7 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        // Now, when iterating over the content of the cart, you can access the model.
-        foreach(Cart::content() as $row) {
-	echo 'You have ' . $row->qty . ' items of ' . $row->model->name . ' with description: "' . $row->model->description . '" in your cart.';
-}
-        // return Cart::Content();
-        // // $list_of_purchase = Order::all();
-        // return view('purchase.index')->with('purchases',$list_of_purchase);
+
     }
 
     /**
@@ -29,11 +26,7 @@ class OrdersController extends Controller
      */
     public function create()
     {
-        // return Cart::add('1', 'buffen',12,20,null,['product_image'=>'noimage']);
-        // // //create a new order
-        // // return view('products.cart');
-        // You can even make it a one-liner
-Cart::add('3', 'buprenex', 12, 10, 50, ['size' => 'small'])->associate('Product');
+
     }
 
     /**
@@ -43,12 +36,43 @@ Cart::add('3', 'buprenex', 12, 10, 50, ['size' => 'small'])->associate('Product'
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   //adding using array syntax
-        //Cart::add(['id' => '293ad', 
-        //'name' => 'Product 1', 'qty' => 1, 'price' => 9.99, 'weight' => 550, 'options' => ['size' => 'large']])
-        //add takes in the id,name,quantity,price,weight,[extra atributes]
-       $add= Cart::add('1', 'buffen',12,20,null,['product_image'=>'noimage']);
-        if($add){echo 'done';}
+    {
+        $orderedProduct=[];
+        $items=$request->session()->get('cart')['items'];
+       ///validate that all products are in stock and store the users order to an associative array of orders
+       foreach ($items as $item ){
+           $quantityInStock=$item['item']['QuantityInStock'];
+           if($quantityInStock >= $item['qty']){
+              $product=['qty'=>$item['qty'],'price'=>$item['price'],'productID'=>$item['ProductID']];
+               $orderedProduct[$item['ProductID']] = $product;
+           }
+       }
+
+        //first get the current users id
+        $AuthUser=auth()->user()->id;
+        $order=new Order();
+        $order->id=$AuthUser;
+        $order->process_status=0;
+        $order->deliverStatus='Pending';
+        $order->save();
+        //after storing the order we retrive the order id so that we can store the orderedProducts
+        $orderID=DB::select('select orders.OrderID from orders where orders.id=:AuthUser and orders.process_status=0 ',['AuthUser'=>$AuthUser]);
+        //after obtaining the order id we will update the orderedProducts table
+
+        foreach ($orderedProduct as $product){
+            $ProductOrdered=new OrderProducts();
+            $ProductOrdered->OrderID=$orderID[0]->OrderID;
+            $productid=intval($product['productID']);
+            $ProductOrdered->ProductID= $productid;
+            $ProductOrdered->Quantity=$product['qty'];
+            $ProductOrdered->SellingPrice=$product['price'];
+            $ProductOrdered->save();
+        }
+        DB::update('update orders set orders.process_status=1 where orders.OrderID=:id',['id'=>$orderID[0]->OrderID]);
+        $request->session()->forget('cart');
+        return view('products.ordered');
+
+
     }
 
     /**
@@ -60,7 +84,7 @@ Cart::add('3', 'buprenex', 12, 10, 50, ['size' => 'small'])->associate('Product'
     
     public function show($id)
     {
-        return Cart::get($Id);
+
     }
     //Cart::total(); to get the total calculated from the price and weight
     /**
@@ -116,9 +140,9 @@ Cart::add('3', 'buprenex', 12, 10, 50, ['size' => 'small'])->associate('Product'
      */
     public function update(Request $request, $id)
     {
-        $rowId = '"27bb92aa49b4151d5065d56d483dd495"';
 
-        Cart::update($rowId, 2); // Will update the quantity
+
+
     }
 
     /**
@@ -130,8 +154,6 @@ Cart::add('3', 'buprenex', 12, 10, 50, ['size' => 'small'])->associate('Product'
     public function destroy($id)
     {
         //takes in the request id
-        $rowId = '8cbf215baa3b757e910e5305ab981172';
 
-        Cart::remove($Id);
     }
 }

@@ -20,6 +20,9 @@ class Order extends Model
         // public function OrderProduct(){
         //     return $this->hasMany('App\Suppliers');
         // }
+    public function User(){
+        return $this->belongsTo('App\Customer');
+    }
     
 
 }
